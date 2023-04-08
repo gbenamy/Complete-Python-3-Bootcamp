@@ -4,7 +4,7 @@ suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 paint = {'Hearts':'❤️','Diamonds':'♦️', 'Spades':'♠️', 'Clubs':'♣️'}
 ranks = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
 values = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8,
-          '9':9, '10':10, 'J':11, 'Q':12, 'K':13, 'A':14}
+          '9':9, '10':10, 'J':10, 'Q':10, 'K':10, 'A':10}
 
 
 
@@ -49,6 +49,7 @@ for i in range(5):
 
 
 class Player:
+    hand=[]
     def __init__(self,name,chips):
         self.name = name
         self.chips = chips
@@ -65,6 +66,15 @@ class Player:
     def getFunds(self):
         return int(self.chips)
     
+    def newHand (self):
+        self.hand=[]
+
+    def newCard (self,card):
+        self.hand.append(card)
+    
+    def getHand(self):
+        return self.hand
+    
 
 p1 = Player("p1",200)
 
@@ -74,32 +84,66 @@ p1.increaseFunds(20)
 p1.decreaseFunds(3)
 
 
-def printHand(c1,c2):
-    if c1 == '**':
-        print('|**|')
+def printHand(cards):
+    for card in cards:
+        if card == '**':
+            print('|**|')
+        else:
+            print(card)
+
+
+def checkHand(cards):
+    val = 0
+    hasAce = 0
+    for card in cards:
+        if card.rank=='A':
+            hasAce+=1
+        val += values[card.rank]
+
+    if not hasAce:
+        return val
     else:
-        print(c1)
-    print(c2)
+        if val == 20:
+            return 21
+        if val > 21:
+            for instance in range(hasAce):
+                val-=9
+                if val<=21:
+                    return val
+        return val
 
 
-printHand('**',c2)
 
 
-gameOn = True
-name = input("Please enter your name:")
-chips = input("Please enter the amount of chips:")
+#gameOn = True
+#name = input("Please enter your name:")
+#chips = input("Please enter the amount of chips:")
 #TODO input validation
-p1 = Player(name,chips)
+p1 = Player('tom',200)
 d1 = Deck()
 d1.shuffle()
-p1_c1=d1.deal_card()
-dealer_c1=d1.deal_card()
-p1_c2=d1.deal_card()
-dealer_c2=d1.deal_card()
 
-print(dealer_c2)
+p1.newHand()
+#p1.newCard(d1.deal_card())
+#p1.newCard(d1.deal_card())
+#p1.newCard(d1.deal_card())
+
+
+c1 = Card('Hearts', '2')
+c2 = Card('Clubs', 'A')
+c3 = Card('Hearts', 'A')
+
+p1.newCard(c1)
+p1.newCard(c2)
+p1.newCard(c3)
+
+
+printHand(p1.getHand())
+print(checkHand(p1.getHand()))
+
+
+gameOn=False #testing
 
 while (gameOn):
-    p1c1=
-
+    pass
    
